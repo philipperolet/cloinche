@@ -15,13 +15,14 @@
 - quand / comment instrumenter mes runs?
 
 ### IDE
+- modifier C-c M-e pour changer le namespace et pretty-printer
 - améliorer le flot projet
   - màj lorsque tu sauves pour lancer un test
   - ouvrir le buffer d'erreur dans une fenêtre switchée bas
-- mieux gérer l'affichage des erreurs de test de "check"
 - gérer le raffraichissement de ns pour ne pas avoir les symboles qui s'accumulent quand on renomme une fonction/un test
 
 ## Done
+- mieux gérer l'affichage des erreurs de test de "check"
 - créer un générateur de permutations
 	- ajouter des property check
 - voir ce que fait instrument en + de check

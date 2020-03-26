@@ -1,20 +1,22 @@
 (ns cloinche.state
-  "Etat d'une partie, représenté par une liste de taille 3 (etat, atout, deck) 
-  Etat
+  "Etat d'une partie, représenté par une map {::state ::trump ::deck}
+
+  Step
   --
-  INITIAL -> cartes non distribuées
-  CUT -> jeu coupé
-  DEALT -> cartes distribuées selon la règle 3-2-3 à partir de l'initial
+  :initial -> cartes non distribuées
+  :cut -> jeu coupé
+  :dealt -> cartes distribuées selon la règle 3-2-3 à partir de l'initial
   0 -> Enchères faites, atout connu, la partie peut commencer
   1 -> le joueur 1 (à droite du donneur) a joué sa première carte
   2,3, 4-> idem joueur 2, 3 et 4 ont joué leur 1ère carte
   5 -> le joueur ayant gagné le dernier pli a joué sa 2e carte
   6, 7, 8 -> les joueurs suivants ont joué leurs 2e carte
   9-32-> idem pour les plis 3 à 8
+  Ainsi, lorsque l'état est un nombre, il correspond au nombre de cartes jouées.
   
-  Atout
+  Trump
   --
-  UNDECIDED si enchères pas faites
+  :undecided si enchères pas faites
   0-3 -> pique, coeur, carreau, trèfle
   
   Deck
@@ -28,7 +30,29 @@
   carreau puis trèfle Une fois la partie débutée (à partir de l'état
   DEALT), les cartes représentent dans l'ordre les cartes du joueur 1,
   puis 2, puis 3, puis 4, puis les plis dans l'ordre du premier au
-  dernier (incluant celui en cours).")
+  dernier (incluant celui en cours)."
+  (:require [clojure.spec.alpha :as s]
+            [clojure.spec.gen.alpha :as gen]
+            [cloinche.utils :as u]))
+
+(s/def ::step (s/or
+               :pre-hands #{:initial :cut :dealt}
+               :hands (s/int-in 0 32)))
+
+(s/def ::trump (s/or
+                :undecided #{:undecided}
+                :trump #{0 1 2 3}))
+
+(s/def ::deck (s/with-gen
+                (s/and ::u/permutation #(= (count %) 32))
+                #(gen/shuffle (range 32))))
+
+
+(s/def ::state (s/and
+                (s/keys :req [::step ::trump ::deck])
+                ;; L'atout est décidé ssi la partie est commencée
+                #(not (and (int? (% ::step)) (= (% ::trump) :undecided)))
+                #(not (and (int? (% ::trump)) (not (int? (% ::step)))))))
 
 (defn valid-deck? [deck]
   (and
@@ -36,14 +60,21 @@
     (= (count deck) 32) ;; 32 is more readable than a nb-cards constant
     (= (sort deck) (range 32))))
 
+
+(s/fdef create-new-state
+  :args (s/or :noarg nil? :deck (s/cat :deck ::deck))
+  :ret ::state)
+
 (defn create-new-state
+  "Crée un nouvel état de début de partie, avec un deck random si pas
+  d'arguments (et le deck spécifié si arguments)"
   ([]
-   '[INITIAL UNDECIDED (range 32)]) ;; 32 is more readable than a constant
+   {::step :initial
+    ::trump :undecided
+    ::deck (range 32)}) ;; 32 is more readable than a constant
   ([deck]
-   {:pre [(valid-deck? deck)]}
-   '[INITIAL UNDECIDED deck]))
+   {:pre (valid-deck? deck)}
+   {::step :initial
+    ::trump :undecided
+    ::deck deck}))
 
-   
-
-
-  
