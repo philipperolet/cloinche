@@ -8,3 +8,9 @@
                  first
                  st/abbrev-result
                  (#(if (:failure %) % nil))))))
+
+(deftest cut-state--test-specs
+  (is (= nil (-> (st/check `cut)
+                 first
+                 st/abbrev-result
+                 (#(if (:failure %) % nil))))))

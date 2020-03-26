@@ -70,3 +70,14 @@
     ::trump :undecided
     ::deck deck}))
 
+(s/fdef cut
+  :args (s/and (s/cat :state ::state)
+               #(= (-> :state :step %) :initial))
+  :ret ::state
+  :fn (s/and #(= (-> % :ret :step) :cut)))
+
+(defn cut [state]
+  "Coupe le jeu à une position aléatoire, d'au moins 5 cartes"
+  {::step :cut
+   ::trump :undecided
+   ::deck (u/shift-permutation (state ::deck) (rand-int 5 27))})

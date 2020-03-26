@@ -1,14 +1,11 @@
 # Backlog
-- refactorer create-new-state pour supprimer tests / pre-conds inutiles & bien faire avec les specs
-- identifier si d'autres tests sont à faire pour create-new-state
-- décider d'où vont les specs & la doc -- test file vs source file (religion)
-- chercher spec vs pre-conditions ou te faire une religion
 - coder l'action de coupe
 - coder l'action de distribution
 - coder l'action d'enchère
 - coder l'action du jeu d'une carte par un joueur
 
 ### Clojure
+- introduire dans les specs des limites liées aux générateurs -- ok? bof...
 - pourquoi spec  devient lent pour la génération de permutations:
   - de taille 1000 avec ta fonction custom?
   - de taille 100000 avec la primitive shuffle?

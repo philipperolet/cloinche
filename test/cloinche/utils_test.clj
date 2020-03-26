@@ -16,3 +16,9 @@
       (is (not (= perm1 perm2)))
       (is (not (= perm2 perm3)))
       (is (not (= perm1 perm3))))))
+
+(deftest shift-permutation--test-specs
+  (is (= nil (-> (st/check `shift-permutation)
+                 first
+                 st/abbrev-result
+                 (#(if (:failure %) % nil))))))
