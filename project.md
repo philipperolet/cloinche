@@ -15,6 +15,10 @@
 - quand / comment instrumenter mes runs?
 
 ### IDE
+- faire démarrer jackin & chargement des bons ns pour les tests au lancement du projet
+- rafraichir suffisamment bien les ns lors du testing pour ne pas avoir de vieux tests / etc.
+  - e.g. binder la sauvegarde à raffraichir ns + évaluer?
+  - oui si automatisation de la sauvegarde par ailleurs
 - modifier C-c M-e pour changer le namespace et pretty-printer
 - améliorer le flot projet
   - màj lorsque tu sauves pour lancer un test
@@ -22,6 +26,7 @@
 - gérer le raffraichissement de ns pour ne pas avoir les symboles qui s'accumulent quand on renomme une fonction/un test
 
 ## Done
+- refactorer create-new-state pour supprimer tests / pre-conds inutiles & bien faire avec les specs
 - mieux gérer l'affichage des erreurs de test de "check"
 - créer un générateur de permutations
 	- ajouter des property check

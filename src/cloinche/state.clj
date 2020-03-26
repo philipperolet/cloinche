@@ -54,13 +54,6 @@
                 #(not (and (int? (% ::step)) (= (% ::trump) :undecided)))
                 #(not (and (int? (% ::trump)) (not (int? (% ::step)))))))
 
-(defn valid-deck? [deck]
-  (and
-    (coll? deck)
-    (= (count deck) 32) ;; 32 is more readable than a nb-cards constant
-    (= (sort deck) (range 32))))
-
-
 (s/fdef create-new-state
   :args (s/or :noarg nil? :deck (s/cat :deck ::deck))
   :ret ::state)
@@ -71,9 +64,8 @@
   ([]
    {::step :initial
     ::trump :undecided
-    ::deck (range 32)}) ;; 32 is more readable than a constant
+    ::deck (u/gen-permutation 32)}) ;; 32 is more readable than a constant
   ([deck]
-   {:pre (valid-deck? deck)}
    {::step :initial
     ::trump :undecided
     ::deck deck}))
