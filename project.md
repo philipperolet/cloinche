@@ -1,5 +1,5 @@
 # Backlog
-- coder l'action de coupe
+- adapter l'action de coupe pour valider l'input externe
 - coder l'action de distribution
 - coder l'action d'enchère
 - coder l'action du jeu d'une carte par un joueur
@@ -23,6 +23,7 @@
 - gérer le raffraichissement de ns pour ne pas avoir les symboles qui s'accumulent quand on renomme une fonction/un test
 
 ## Done
+- coder l'action de coupe
 - refactorer create-new-state pour supprimer tests / pre-conds inutiles & bien faire avec les specs
 - mieux gérer l'affichage des erreurs de test de "check"
 - créer un générateur de permutations

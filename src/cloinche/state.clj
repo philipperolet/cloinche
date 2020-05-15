@@ -35,6 +35,10 @@
             [clojure.spec.gen.alpha :as gen]
             [cloinche.utils :as u]))
 
+;;
+;; Base attribute specs
+;;
+
 (s/def ::step (s/or
                :pre-hands #{:initial :cut :dealt}
                :hands (s/int-in 0 32)))
@@ -47,13 +51,14 @@
                 (s/and ::u/permutation #(= (count %) 32))
                 #(gen/shuffle (range 32))))
 
-
 (s/def ::state (s/and
                 (s/keys :req [::step ::trump ::deck])
                 ;; L'atout est décidé ssi la partie est commencée
                 #(not (and (int? (% ::step)) (= (% ::trump) :undecided)))
                 #(not (and (int? (% ::trump)) (not (int? (% ::step)))))))
-
+;;
+;; State creation & actions
+;; 
 (s/fdef create-new-state
   :args (s/or :noarg nil? :deck (s/cat :deck ::deck))
   :ret ::state)
@@ -72,12 +77,14 @@
 
 (s/fdef cut
   :args (s/and (s/cat :state ::state)
-               #(= (-> :state :step %) :initial))
+               #(= (-> % :state :step) :initial))
   :ret ::state
   :fn (s/and #(= (-> % :ret :step) :cut)))
 
 (defn cut [state]
-  "Coupe le jeu à une position aléatoire, d'au moins 5 cartes"
+  "Coupe le jeu dans un état initial, à une position aléatoire, d'au moins 5 cartes."
+  {:pre [(s/valid? ::state state) (= (:step state) :initial)]}
   {::step :cut
    ::trump :undecided
    ::deck (u/shift-permutation (state ::deck) (rand-int 5 27))})
+0
